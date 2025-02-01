@@ -1,0 +1,100 @@
+// 24K-0523
+// M. Khizar Rashid
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Task 2: Attendance Checker
+
+bool checkParticipantRegistration(string event1[], int x, string event2[], int y, string name) {
+    for (int i = 0; i < x; i++) {
+        if (event1[i] == name)
+            return true;
+    }
+    for (int i = 0; i < y; i++) {
+        if (event2[i] == name)
+            return true;
+    }
+    return false;
+}
+
+int main() {
+    int x, y;
+
+// Task 1: Register Event Participants
+
+    do {
+        cout << "Enter how many participants for event 1: ";
+        cin >> x;
+        if (x > 5)
+            cout << "Max participants exceeded !!!" << endl;
+    } while (x > 5);
+
+    string event1[x];
+
+    for (int i = 0; i < x; i++) {
+        cout << "Enter name of participant " << i + 1 << ": ";
+        cin >> event1[i];
+    }
+
+    do {
+        cout << "Enter how many participants for event 2: ";
+        cin >> y;
+        if (y > 5)
+            cout << "Max participants exceeded !!!" << endl;
+    } while (y > 5);
+
+    string event2[y];
+
+    for (int i = 0; i < y; i++) {
+        cout << "Enter name of participant " << i + 1 << ": ";
+        cin >> event2[i];
+    }
+
+// Task 2: Attendance Checker
+
+    string name;
+    cout << "check if a participant is registered  : ";
+    cin >> name;
+    if (checkParticipantRegistration(event1, x, event2, y, name)) {
+        cout << name << " is registered ." << endl;
+    } else {
+        cout << name << " is NOT registered." << endl;
+    }
+
+// Task 3: Calculate Total Donations
+    int total = (x + y) * 10;
+    cout << "Total donation amount: " << total << endl;
+
+// Task 4: Display Participants Name in Reverse 
+
+    cout << "Event 1 Participants (in reverse order): " << endl;
+    for (int i = x - 1; i >= 0; i--) {
+        cout << event1[i] << endl;
+    }
+
+    cout << "Event 2 Participants (in reverse order): " << endl;
+    for (int i = y - 1; i >= 0; i--) {
+        cout << event2[i] << endl;
+    }
+
+// Task 5: Event Popularity Bar Chart
+
+    cout << "Event Popularity Chart:" << endl;
+    cout << "Event 1: ";
+    for (int i = 0; i < x; i++) {
+        cout << "*";
+    }
+    cout << " (" << x << " participants)\n";
+
+    cout << "Event 2: ";
+    for (int i = 0; i < y; i++) {
+        cout << "*";
+    }
+    cout << " (" << y << " participants)\n";
+
+    return 0;
+}
+
+
