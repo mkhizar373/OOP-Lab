@@ -1,0 +1,163 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+// Task 2: Identify Critical Pollution Days
+void findCriticalPollutionDays(int AQI[4][7]) {
+    cout << "\nCritical Pollution Days (AQI > 150):\n";
+    bool foundCritical = false;
+
+    for (int i = 0; i < 4; i++) {
+        bool cityCriticalDays = false;
+        cout << "City " << i + 1 << ": Days ";
+
+        for (int j = 0; j < 7; j++) {
+            if (AQI[i][j] > 150) {
+                if (cityCriticalDays) {
+                    cout << ",";
+                }
+                cout << j + 1;
+                cityCriticalDays = true;
+                foundCritical = true;
+            }
+        }
+
+        if (!cityCriticalDays) {
+            cout << "No critical days.";
+        }
+        cout << endl;
+    }
+
+    if (!foundCritical) {
+        cout << "No cities.\n";
+    }
+}
+
+// Task 3: Data Visualization
+void visualizeAQI(int AQI[4][7]) {
+    cout << "\nAQI Data Visualization :\n";
+
+    for (int i = 0; i < 4; i++) {
+        cout << "City " << i + 1 << ": ";
+        for (int j = 0; j < 7; j++) {
+            int symbols = AQI[i][j] / 50;
+            for (int k = 0; k < symbols; k++) {
+                cout << "*";
+            }
+            cout << " "; // Space between symbols for readability
+        }
+        cout << endl;
+    }
+}
+
+int main() {
+    int cities = 4;
+    int days = 7;  
+
+    int AQI[4][7];  
+
+// Task 1: Weekly AQI Tracker
+    cout << "Enter the AQI values for each city (7 days) :\n";
+    for (int i = 0; i < cities; i++) {
+        cout << "Data for City " << i + 1 << ":\n";
+        for (int j = 0; j < days; j++) {
+            cout << "Day " << j + 1 << ": ";
+            cin >> AQI[i][j];
+        }
+    }
+
+    double averageAQI[4] = {0};
+    int worstCityIndex = 0;
+
+    cout << "\nAverage AQI :\n";
+    for (int i = 0; i < cities; i++) {
+        int sum = 0;
+        for (int j = 0; j < days; j++) {
+            sum += AQI[i][j];
+        }
+        averageAQI[i] = sum / 7.0;
+        cout << "City " << i + 1 << ": " << averageAQI[i] << endl;
+
+        if (averageAQI[i] > averageAQI[worstCityIndex]) {
+            worstCityIndex = i;
+        }
+    }
+
+    cout << "\nCity " << worstCityIndex + 1 << " has the worst air quality. \n" << endl;
+
+// Task 2: Identify Critical Pollution Days
+    findCriticalPollutionDays(AQI);
+
+// Task 3: Data Visualization
+    visualizeAQI(AQI);
+
+// Task 4: Monthly AQI Comparison 
+    int AQI_28[4][28]; 
+
+    for (int i = 0; i < cities; i++) {
+        for (int j = 0; j < 7; j++) {
+            AQI_28[i][j] = AQI[i][j];
+        }
+    }
+
+    cout << "\nNow enter the additional AQI values for each city (21 more days):\n";
+    for (int i = 0; i < cities; i++) {
+        for (int j = 7; j < 28; j++) {
+            cout << "Day " << j + 1 << " for City " << i + 1 << ": ";
+            cin >> AQI_28[i][j];
+        }
+    }
+
+    double monthlyAverageAQI[4] = {0};
+    double firstWeekAverage[4] = {0};
+    double lastWeekAverage[4] = {0};
+    int mostImprovedCity = 0;
+    double maxImprovement = 0;
+
+    for (int i = 0; i < cities; i++) {
+        int monthSum = 0;
+        int firstWeekSum = 0;
+        int lastWeekSum = 0;
+
+        for (int j = 0; j < 28; j++) {
+            monthSum += AQI_28[i][j];
+            if (j < 7) firstWeekSum += AQI_28[i][j];  
+            if (j >= 21) lastWeekSum += AQI_28[i][j];  
+        }
+
+        monthlyAverageAQI[i] = monthSum / 28.0;
+        firstWeekAverage[i] = firstWeekSum / 7.0;
+        lastWeekAverage[i] = lastWeekSum / 7.0;
+
+        double improvement = firstWeekAverage[i] - lastWeekAverage[i];
+        if (improvement > maxImprovement) {
+            maxImprovement = improvement;
+            mostImprovedCity = i;
+        }
+    }
+
+    cout << "\nMonthly Average AQI for each city:\n";
+    for (int i = 0; i < cities; i++) {
+        cout << "City " << i + 1 << ": " << monthlyAverageAQI[i] << endl;
+    }
+
+    cout << "\nCity " << mostImprovedCity + 1 << " has the most improved air quality\n";
+
+// Task 5: Generate a Report
+    cout << "\nReport:\n";
+    cout << "Weekly Average AQI for each city:\n";
+    for (int i = 0; i < cities; i++) {
+        cout << "City " << i + 1 << ": " << averageAQI[i] << endl;
+    }
+
+    findCriticalPollutionDays(AQI);
+
+    cout << "\nMonthly Comparison:\n";
+    cout << "\nMonthly Average AQI:\n";
+    for (int i=0 ; i < cities ; i++) {
+        cout << "City " << i+1 << " - " << monthlyAverageAQI[i] << endl;
+    }
+
+    return 0;
+}
