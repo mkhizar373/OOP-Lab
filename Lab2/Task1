@@ -1,0 +1,43 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+struct Book {
+    string title;
+    string author;
+    int year;
+};
+
+int main() {
+    int bookNum;
+    cout << "Enter number of books: ";
+    cin >> bookNum;
+
+    Book *arr = new Book[bookNum];
+
+    for (int i=0 ; i<bookNum ; i++) {
+        cout << "\nEnter title of the book: ";
+        cin >> arr[i].title;
+        cout << "Enter author of the book: ";
+        cin >> arr[i].author;
+        cout << "Enter year of the book: ";
+        cin >> arr[i].year;
+    }
+
+    int displayYear;
+    cout << "\nEnter year to display books published after that year: ";
+    cin >> displayYear;
+
+    for (int i=0 ; i<bookNum ; i++) {
+        if (arr[i].year > displayYear) {
+            cout << "\nBook Title: " << arr[i].title << endl;
+            cout << "Book Author: " << arr[i].author << endl;
+            cout << "Book Year: " << arr[i].year << endl;
+        }
+    }
+
+    delete[] arr;
+
+    return 0;
+}
