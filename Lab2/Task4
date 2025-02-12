@@ -1,0 +1,36 @@
+#include <iostream>
+using namespace std;
+
+int main () {
+    int numStrings;
+
+    cout <<"Enter number of strings: ";
+    cin>>numStrings;
+    cin.ignore(); 
+
+    string* stringArr = new string[numStrings];
+
+    for(int i=0 ; i < numStrings ; i++) {
+        cout<<"Enter string"<< i+1 <<": ";
+        getline(cin, stringArr[i]);
+    }
+    
+    for(int i=0 ; i < numStrings - 1 ; i++) {
+        for(int j=0 ; j < numStrings - i-1 ; j++) {
+            if(stringArr[j] > stringArr[j+1]) {
+                string temp = stringArr[j];
+                stringArr[j] = stringArr[j+1];
+                stringArr[j+1] = temp;
+            }
+        }
+    }
+
+    cout<<"Sorted strings :\n";
+    for (int i=0 ; i<numStrings ; i++) {
+        cout<<stringArr[i]<<endl;
+    }
+
+    delete[] stringArr;
+
+    return 0;
+}
