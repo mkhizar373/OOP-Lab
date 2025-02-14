@@ -1,0 +1,90 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int r1, c1, r2, c2;
+    cout << "Enter rows for matrix1: ";
+    cin >> r1;
+    cout << "Enter columns for matrix1: ";
+    cin >> c1;
+    cout << "Enter rows for matrix2: ";
+    cin >> r2;
+    cout << "Enter columns for matrix2: ";
+    cin >> c2;
+
+
+    if (c1 != r2) {
+        cout << "not possible" << endl;
+        return 1; 
+    }
+
+    int** m1 = new int*[r1];
+    for (int i=0 ; i<r1 ; i++) {
+        m1[i] = new int[c1];
+    }
+
+    int** m2 = new int*[r2];
+    for (int i=0 ; i<r2 ; i++) {
+        m2[i] = new int[c2];
+    }
+
+    cout << "Enter the elements of matrix1:" <<endl;
+    for (int i=0 ; i<r1 ; i++) {
+        for (int j=0; j<c1 ; j++) {
+            cout << "Enter element [" <<i+1<<"]["<< j+1<<"]: ";
+            cin >> m1[i][j];
+        }
+    }
+
+    cout << "Enter the elements of matrix2:" << endl;
+    for (int i = 0; i < r2; i++) {
+        for (int j = 0; j < c2; j++) {
+            cout << "Enter element [" <<i+1<<"]["<<j+1<<"]: ";
+            cin >> m2[i][j];
+        }
+    }
+
+    int** m3 = new int*[r1];
+    for (int i=0 ; i<r1 ; i++) {
+        m3[i] = new int[c2];
+    }
+
+    for (int i=0 ; i<r1 ; i++) {
+        for (int j=0 ; j<c2; j++) {
+            m3[i][j] = 0;
+        }
+    }
+
+    for (int i=0 ; i<r1 ; i++) {
+        for (int j=0 ; j<c2 ; j++) {
+            for (int k=0 ; k<c1 ; k++) {
+                m3[i][j] += m1[i][k] * m2[k][j];
+            }
+        }
+    }
+
+    cout << "Resultant Matrix:" << endl;
+    for (int i=0 ; i<r1 ; i++) {
+        for (int j=0 ; j<c2 ; j++) {
+            cout << m3[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+    for (int i=0 ; i<r1 ; i++) {
+        delete[] m1[i]; 
+    }
+    delete[] m1; 
+
+    for (int i=0 ; i<r2 ; i++) {
+        delete[] m2[i]; 
+    }
+    delete[] m2; 
+
+    for (int i=0 ; i<r1 ; i++) {
+        delete[] m3[i]; 
+    }
+    delete[] m3; 
+
+    return 0;
+}
