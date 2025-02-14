@@ -1,0 +1,55 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Inventory {
+    int productID;
+    string name;
+    int quantity;
+    int price;
+};
+
+int main() {
+    int num;
+    cout << "Enter number of products: ";
+    cin >> num;
+
+    if (num <= 0) {
+        cout << "Invalid number" << endl;
+        return 1;
+    }
+
+    Inventory* product = new Inventory[num];
+
+    for (int i=0 ; i<num ; i++) {
+        cout << "\nEnter product ID: ";
+        cin >> product[i].productID;
+
+        cin.ignore(); 
+        cout << "Enter product name: ";
+        getline(cin, product[i].name);
+
+        cout << "Enter product quantity: ";
+        cin >> product[i].quantity;
+
+        cout << "Enter product price: ";
+        cin >> product[i].price;
+
+        if (product[i].quantity < 0 || product[i].price < 0) {
+            cout << "Invalid input" << endl;
+            delete[] product; 
+            return 1;
+        }
+    }
+
+    int total=0;
+    for (int i=0 ; i<num ; i++) {
+        total += (product[i].quantity * product[i].price);
+    }
+
+    cout << "\nTotal value of products: " <<total<< endl;
+
+    delete[] product;
+    
+    return 0;
+}
