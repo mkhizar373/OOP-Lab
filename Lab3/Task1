@@ -1,0 +1,99 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Wallet {
+private:
+    string ownerName;          
+    double totalBalance;       
+    string transactionHistory[100]; 
+    int count;      
+
+public:
+    Wallet(string name) {
+        ownerName = "Saad";
+        totalBalance = 0.0;
+        count = 0; 
+    }
+
+    void addMoney(double amount) {
+        if (amount>0) {
+            totalBalance += amount;
+            transactionHistory[count] = "Added: +" + to_string(amount);
+            count++;
+            cout << "Amount added" << endl;
+        } else {
+            cout <<"Invalid"<< endl;
+        }
+    }
+
+    void spendMoney(double amount) {
+        if (amount>0 && amount<=totalBalance) {
+            totalBalance -= amount;
+            transactionHistory[count] = "Spent: -" + to_string(amount);
+            count++;
+            cout << "Amount spent" << endl;
+
+            if (totalBalance < 100) {
+                cout << "Your balance is low (" <<totalBalance<< ")" << endl;
+            }
+        } else {
+            cout << "Invalid" << endl;
+        }
+    }
+
+    void displayHistory() {
+        cout << "\nTransaction History for " << ownerName << ":\n";
+        for (int i=0 ; i<count ; i++) {
+            cout << transactionHistory[i] << endl;
+        }
+        cout <<"Current Balance: " <<totalBalance<< endl;
+    }
+};
+
+int main() {
+    string name;
+
+    Wallet wallet(name);
+    cout << "Saad's Wallet: " << endl;
+
+    int choice;
+    double amount;
+
+    do {
+        cout << "\n1. Add Money\n";
+        cout << "2. Spend Money\n";
+        cout << "3. View Transaction History\n";
+        cout << "4. Exit\n";
+        
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout<<"Enter amount to add: ";
+                cin >> amount;
+                wallet.addMoney(amount);
+                break;
+
+            case 2:
+                cout <<"Enter amount to spend: ";
+                cin>> amount;
+                wallet.spendMoney(amount);
+                break;
+
+            case 3:
+                wallet.displayHistory();
+                break;
+
+            case 4:
+                cout<< "exit" << endl;
+                break;
+
+            default:
+                cout << "Invalid choice" << endl;
+        }
+    } while (choice!=4);
+
+    return 0;
+}
