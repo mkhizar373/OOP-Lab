@@ -1,0 +1,113 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Car {
+private:
+    string brand;
+    string model;
+    double rentalPrice;
+    bool isAvailable;
+    double totalRevenue;  
+
+public:
+    Car(string b, string m, double price, bool avail) {
+        brand = b;
+        model = m;
+        rentalPrice = price;
+        isAvailable = avail;
+        totalRevenue = 0.0;  
+    }
+
+    Car(const Car &c) {
+        brand = c.brand;
+        model = c.model;
+        rentalPrice = c.rentalPrice;
+        isAvailable = c.isAvailable;
+        totalRevenue = c.totalRevenue;  
+        cout << "Copy constructor called" << endl;
+    }
+
+    ~Car() {
+        cout << "Destructor called" << endl;
+    }
+
+    void applyDiscount(int days) {
+        if (days > 10) {
+            rentalPrice -= rentalPrice * 0.10;
+        } else if (days > 5) {
+            rentalPrice -= rentalPrice * 0.05;
+        }
+    }
+
+    void checkAvailability() {
+        if (isAvailable) {
+            cout << "Car available for rent" << endl;
+        } else {
+            cout << "Car currently rented" << endl;
+        }
+    }
+
+    void processRentalRequest(int days) {
+        if (isAvailable) {
+            applyDiscount(days);
+            double revenueGenerated = rentalPrice * days;
+            this->totalRevenue += revenueGenerated; 
+            isAvailable = false;  
+            cout << "Car rented successfully for " << days << " days." << endl;
+            cout << "Revenue generated: " << revenueGenerated << "k" << endl;
+        } else {
+            cout << "Car already rented." << endl;
+        }
+    }
+
+    void returnCar() {
+        isAvailable = true;
+    }
+
+    void displayTotalRevenue() {
+        cout << "Total Revenue from " << brand << " " << model << ": " << totalRevenue << "k" << endl;
+    }
+
+    void updateCarDetails(string newBrand, string newModel, double newPrice) {
+        brand = newBrand;
+        model = newModel;
+        rentalPrice = newPrice;
+    }
+
+    void displayCarDetails() {
+        cout << "Car Details:" << endl;
+        cout << "Brand: " << brand << endl;
+        cout << "Model: " << model << endl;
+        cout << "Rental Price: " << rentalPrice << "k per day" << endl;
+        checkAvailability();
+        displayTotalRevenue();
+    }
+};
+
+
+int main() {
+
+    Car car1("Toyota", "Corolla", 5.0, true);
+
+    cout << "\nCar Details:\n";
+    car1.displayCarDetails();
+
+    cout << "\nRental for 7 days:\n";
+    car1.processRentalRequest(7);
+
+    cout << "\nAfter Renting:\n";
+    car1.displayCarDetails();
+
+    cout << "\nReturning Car:\n";
+    car1.returnCar();
+    car1.displayCarDetails();
+
+    cout << "\nRental for 3 days:\n";
+    car1.processRentalRequest(3);
+
+    cout << "\nAfter Second Rental:\n";
+    car1.displayCarDetails();
+
+    return 0;
+}
