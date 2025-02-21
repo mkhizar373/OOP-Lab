@@ -1,0 +1,114 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Car {
+private:
+    string brand;
+    string model;
+    float fuelCapacity;     
+    float currentFuelLevel; 
+
+public:
+    Car(string b, string m, float capacity) {
+        brand = b;
+        model = m;
+        fuelCapacity = capacity;
+        currentFuelLevel = capacity; 
+    }
+
+    void drive(float distance) {
+        float fuelConsumed = distance * 0.1; // 10 km per liter
+        if (fuelConsumed > currentFuelLevel) {
+            cout << "Not enough fuel" << distance << " km!\n";
+        } else {
+            currentFuelLevel -= fuelConsumed;
+            cout << "Drove " << distance << " km. Fuel consumed: " << fuelConsumed << " liters.\n";
+            checkFuelStatus();
+        }
+    }
+
+    void refuel(float amount) {
+        if (amount <= 0) {
+            cout << "Invalid!\n";
+            return;
+        }
+
+        if (currentFuelLevel + amount > fuelCapacity) {
+            cout << "overflow!\n";
+            currentFuelLevel = fuelCapacity;
+        } else {
+            currentFuelLevel += amount;
+            cout << "Added " << amount << " liters of fuel.\n";
+        }
+        checkFuelStatus();
+    }
+
+    void checkFuelStatus() const {
+        cout << "Current fuel level: " << currentFuelLevel << " liters.\n";
+        if (currentFuelLevel < 5) {
+            cout << "Low fuel\n";
+        }
+    }
+
+    void displayCarInfo() const {
+        cout << "Car: " << brand << " " << model << "\n";
+        cout << "Fuel Capacity: " << fuelCapacity << " liters\n";
+        cout << "Current Fuel Level: " << currentFuelLevel << " liters\n";
+    }
+};
+
+int main() {
+    string brand, model;
+    float fuelCapacity;
+
+    cout << "Enter car brand: ";
+    cin >> brand;
+    cout << "Enter car model: ";
+    cin >> model;
+    cout << "Enter fuel capacity (in liters): ";
+    cin >> fuelCapacity;
+
+    Car zoyaCar(brand, model, fuelCapacity);
+
+    zoyaCar.displayCarInfo();
+
+    int choice;
+    float value;
+
+    do {
+        cout << "\n1. Drive Car\n";
+        cout << "2. Refuel Car\n";
+        cout << "3. Check Fuel Status\n";
+        cout << "4. Display Car Info\n";
+        cout << "5. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter distance to drive (in km): ";
+                cin >> value;
+                zoyaCar.drive(value);
+                break;
+            case 2:
+                cout << "Enter fuel amount to refuel (in liters): ";
+                cin >> value;
+                zoyaCar.refuel(value);
+                break;
+            case 3:
+                zoyaCar.checkFuelStatus();
+                break;
+            case 4:
+                zoyaCar.displayCarInfo();
+                break;
+            case 5:
+                break;
+            default:
+                cout << "Invalid choice\n";
+        }
+    } while (choice!=5);
+
+    return 0;
+}
