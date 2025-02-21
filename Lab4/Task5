@@ -1,0 +1,114 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Car {
+private:
+    string brand;
+    string model;
+    double rentalPrice;
+    bool isAvailable;
+    double totalRevenue;
+    string registrationNumber;  
+
+public:
+    Car(string regNum, string b, string m, double price, bool avail)
+        : registrationNumber(regNum), brand(b), model(m), rentalPrice(price), isAvailable(avail), totalRevenue(0.0) {}
+
+    Car(const Car &c) 
+        : registrationNumber(c.registrationNumber), brand(c.brand), model(c.model),
+          rentalPrice(c.rentalPrice), isAvailable(c.isAvailable), totalRevenue(c.totalRevenue) {
+        cout << "Copy constructor called" << endl;
+    }
+
+    ~Car() {
+        cout << "Destructor called" << endl;
+    }
+
+    void applyDiscount(int days) {
+        if (days > 10) {
+            rentalPrice -= rentalPrice * 0.10;
+        } else if (days > 5) {
+            rentalPrice -= rentalPrice * 0.05;
+        }
+    }
+
+    void checkAvailability() {
+        cout << (isAvailable ? "Car available for rent" : "Car currently rented") << endl;
+    }
+
+    void processRentalRequest(int days) {
+        if (isAvailable) {
+            applyDiscount(days);
+            double revenueGenerated = rentalPrice * days;
+            this->totalRevenue += revenueGenerated;  
+            isAvailable = false;  
+            cout << "Car rented successfully for " << days << " days." << endl;
+            cout << "Revenue generated: " << revenueGenerated << "k" << endl;
+        } else {
+            cout << "Car already rented." << endl;
+        }
+    }
+
+    void returnCar() {
+        isAvailable = true;
+        cout << "Car returned and available for rent." << endl;
+    }
+
+    void displayTotalRevenue() {
+        cout << "Total Revenue from " << brand << " " << model << " (Reg: " << registrationNumber << "): " << totalRevenue << "k" << endl;
+    }
+
+    void updateCarDetails(string newBrand, string newModel, double newPrice) {
+        brand = newBrand;
+        model = newModel;
+        rentalPrice = newPrice;
+    }
+
+
+    void displayCarDetails() {
+        cout << "Car Details:" << endl;
+        cout << "Registration Number: " << registrationNumber << endl;
+        cout << "Brand: " << brand << endl;
+        cout << "Model: " << model << endl;
+        cout << "Rental Price: " << rentalPrice << "k per day" << endl;
+        checkAvailability();
+        displayTotalRevenue();
+        cout << endl;
+    }
+};
+
+
+int main() {
+
+    Car car1("AHT-721", "Toyota", "Corolla", 5.0, true);
+    Car car2("BAD-010", "Honda", "Civic", 6.5, true);
+
+    cout << "\nInitial Car Details:\n";
+    car1.displayCarDetails();
+    car2.displayCarDetails();
+
+    cout << "\nProcessing Rental for 7 days (Car 1):\n";
+    car1.processRentalRequest(7);
+
+    cout << "\nAfter Renting Car 1:\n";
+    car1.displayCarDetails();
+
+    cout << "\nReturning Car 1:\n";
+    car1.returnCar();
+    car1.displayCarDetails();
+
+    cout << "\nProcessing Rental for 3 days (Car 1):\n";
+    car1.processRentalRequest(3);
+
+    cout << "\nAfter Second Rental (Car 1):\n";
+    car1.displayCarDetails();
+
+    cout << "\nProcessing Rental for 5 days (Car 2):\n";
+    car2.processRentalRequest(5);
+    
+    cout << "\nAfter Renting Car 2:\n";
+    car2.displayCarDetails();
+
+    return 0;
+}
