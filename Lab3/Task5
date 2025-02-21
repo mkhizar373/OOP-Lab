@@ -1,0 +1,113 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class MusicPlayer {
+private:
+    string playlist[10]; 
+    int totalSongs; 
+    string currentlyPlayingSong;
+
+public:
+    MusicPlayer() : totalSongs(0), currentlyPlayingSong("") {}
+
+    void addSong(const string& song) {
+        if (totalSongs < 10) {
+            playlist[totalSongs++] = song;
+            cout << "\"" << song << "\" has been added to your playlist.\n";
+        } else {
+            cout << "playlist full.\n";
+        }
+    }
+
+    void removeSong(const string& song) {
+        bool songFound = false;
+        for (int i=0 ; i<totalSongs ; i++) {
+            if (playlist[i] == song) {
+                songFound = true;
+                for (int j=i ; j<totalSongs - 1 ; j++) {
+                    playlist[j] = playlist[j + 1]; 
+                }
+                totalSongs--; 
+                cout << "\"" << song << "\" has been removed from your playlist.\n";
+                break;
+            }
+        }
+        if (!songFound) {
+            cout << "\"" << song << "\" is not in your playlist.\n";
+        }
+    }
+
+    void playSong(const string& song) {
+        bool songFound = false;
+        for (int i=0 ; i<totalSongs ; i++) {
+            if (playlist[i] == song) {
+                currentlyPlayingSong = song;
+                songFound = true;
+                cout << "Now playing: " << song << endl;
+                break;
+            }
+        }
+        if (!songFound) {
+            cout << "\"" << song << "\" is not in your playlist.\n";
+        }
+    }
+
+    void displayPlaylist() const {
+        cout << "\nYour Playlist:\n";
+        if (totalSongs == 0) {
+            cout << "Your playlist is empty.\n";
+        } else {
+            for (int i=0 ; i<totalSongs ; i++) {
+                cout << (i + 1) << ". " << playlist[i] << endl;
+            }
+        }
+    }
+};
+
+int main() {
+    MusicPlayer imranMusicPlayer;
+
+    int choice;
+    string song;
+
+    do {
+        cout << "\n1. Add Song\n";
+        cout << "2. Remove Song\n";
+        cout << "3. Play Song\n";
+        cout << "4. Display Playlist\n";
+        cout << "5. Exit\n";
+
+        cout << "Enter your choice: ";
+        cin >> choice;
+        cin.ignore(); 
+
+        switch (choice) {
+            case 1:
+                cout << "Enter song name to add: ";
+                getline(cin, song);
+                imranMusicPlayer.addSong(song);
+                break;
+            case 2:
+                cout << "Enter song name to remove: ";
+                getline(cin, song);
+                imranMusicPlayer.removeSong(song);
+                break;
+            case 3:
+                cout << "Enter song name to play: ";
+                getline(cin, song);
+                imranMusicPlayer.playSong(song);
+                break;
+            case 4:
+                imranMusicPlayer.displayPlaylist();
+                break;
+            case 5:
+                break;
+            default:
+                cout << "Invalid choice\n";
+        }
+    } while (choice != 5);
+
+    return 0;
+}
