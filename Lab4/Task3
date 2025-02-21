@@ -1,0 +1,101 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Car {
+private:
+    string brand;
+    string model;
+    double rentalPrice;
+    bool isAvailable;
+
+public:
+    Car(string b, string m, double price, bool avail) {
+        brand = b;
+        model = m;
+        rentalPrice = price;
+        isAvailable = avail;
+    }
+
+    Car(Car &c) {
+        brand = c.brand;
+        model = c.model;
+        rentalPrice = c.rentalPrice;
+        isAvailable = c.isAvailable;
+        cout << "Copy constructor called" << endl;
+    }
+
+
+    ~Car() {
+        cout << "Destructor called" << endl;
+    }
+
+    void applyDiscount(int days) {
+        if (days > 10) {
+            rentalPrice -= rentalPrice * 0.10;
+        } else if (days > 5) {
+            rentalPrice -= rentalPrice * 0.05;
+        }
+    }
+
+    void checkAvailability() {
+        if (isAvailable) {
+            cout << "Car available for rent" << endl;
+        } else {
+            cout << "Car currently rented" << endl;
+        }
+    }
+
+    void processRentalRequest(int days) {
+        if (isAvailable) {
+            applyDiscount(days);
+            isAvailable = false;
+            cout << "Car rented successfully." << endl;
+        } else {
+            cout << "Car already rented." << endl;
+        }
+    }
+
+    void returnCar() {
+        isAvailable = true;
+    }
+
+    void updateCarDetails(string newBrand, string newModel, double newPrice) {
+        brand = newBrand;
+        model = newModel;
+        rentalPrice = newPrice;
+    }
+
+    void displayCarDetails() {
+        cout << "Car Details:" << endl;
+        cout << "Brand: " << brand << endl;
+        cout << "Model: " << model << endl;
+        cout << "Rental Price: " << rentalPrice << "k" << endl;
+        checkAvailability();
+    }
+};
+
+int main() {
+
+    Car car1("Toyota", "Corolla", 5.0, true);
+    cout << endl;
+    
+    car1.displayCarDetails();
+    cout << endl;
+    
+    Car car2 = car1;  
+    cout << endl;
+    
+    car2.displayCarDetails();
+    cout << endl;
+    
+    car1.updateCarDetails("Honda", "Civic", 6.5);
+
+    car1.displayCarDetails();
+    cout << endl;
+    
+    car2.displayCarDetails();
+    cout << endl;
+    
+    return 0;
+}
