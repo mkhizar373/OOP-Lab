@@ -1,0 +1,143 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Library {
+private:
+    string bookList[10];
+    string borrowedBooks[10];
+    int totalBooks = 0;
+    int totalBorrowed = 0;
+
+public:
+    Library() {}
+
+    void addBook(const string& book) {
+        if (totalBooks<10) {
+            for (int i=0 ; i<totalBooks ; i++) {
+                if (bookList[i] == book) {
+                    cout << "Book \"" << book << "\" already exists in the library.\n";
+                    return;
+                }
+            }
+            bookList[totalBooks++] = book;
+            cout << "Added book: " << book << endl;
+        } else {
+            cout << "Library is full! Cannot add more books.\n";
+        }
+    }
+
+    void lendBook(const string& book) {
+        if (totalBorrowed >= 10) {
+            cout << "Cannot lend more books. Borrowing limit reached!\n";
+            return;
+        }
+
+        for (int i = 0; i < totalBooks; ++i) {
+            if (bookList[i] == book) {
+                bool isBorrowed = false;
+                for (int j = 0; j < totalBorrowed; ++j) {
+                    if (borrowedBooks[j] == book) {
+                        isBorrowed = true;
+                        break;
+                    }
+                }
+                if (isBorrowed) {
+                    cout << "Book \"" << book << "\" is already borrowed.\n";
+                } else {
+                    borrowedBooks[totalBorrowed++] = book;
+                    cout << "Lent book: " << book << endl;
+                }
+                return;
+            }
+        }
+        cout << "Book \"" << book << "\" not available in the library.\n";
+    }
+
+    void returnBook(const string& book) {
+        for (int i=0 ; i<totalBorrowed; i++) {
+            if (borrowedBooks[i] == book) {
+                for (int j = i; j < totalBorrowed - 1; j++) {
+                    borrowedBooks[j] = borrowedBooks[j + 1];
+                }
+                totalBorrowed--;
+                cout << "Returned book: " << book << endl;
+                return;
+            }
+        }
+        cout << "Book \"" << book << "\" was not borrowed from this library.\n";
+    }
+
+    void displayBooks() {
+        cout << "\nBooks in Library:\n";
+        if (totalBooks==0) {
+            cout << "No books available in the library.\n";
+        } else {
+            for (int i=0 ; i<totalBooks; i++) {
+                cout << "- " << bookList[i] << endl;
+            }
+        }
+    }
+
+    void displayBorrowedBooks() {
+        cout << "\nBorrowed Books:\n";
+        if (totalBorrowed==0) {
+            cout << "No books are currently borrowed.\n";
+        } else {
+            for (int i=0 ; i<totalBorrowed ; i++) {
+                cout << "- " << borrowedBooks[i] << endl;
+            }
+        }
+    }
+};
+
+int main() {
+    Library lib;
+    int choice;
+    string book;
+
+    do {
+        cout << "\nLibrary Management System\n";
+        cout << "1. Add Book\n";
+        cout << "2. Lend Book\n";
+        cout << "3. Return Book\n";
+        cout << "4. Display Books\n";
+        cout << "5. Display Borrowed Books\n";
+        cout << "6. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter book name to add: ";
+                cin.ignore();
+                getline(cin, book);
+                lib.addBook(book);
+                break;
+            case 2:
+                cout << "Enter book name to borrow: ";
+                cin.ignore();
+                getline(cin, book);
+                lib.lendBook(book);
+                break;
+            case 3:
+                cout << "Enter book name to return: ";
+                cin.ignore();
+                getline(cin, book);
+                lib.returnBook(book);
+                break;
+            case 4:
+                lib.displayBooks();
+                break;
+            case 5:
+                lib.displayBorrowedBooks();
+                break;
+            case 6:
+                break;
+            default:
+                cout << "Invalid choice\n";
+        }
+    } while (choice!=6);
+
+    return 0;
+}
