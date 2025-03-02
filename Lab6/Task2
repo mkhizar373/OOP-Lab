@@ -1,0 +1,68 @@
+#include <iostream>
+using namespace std;
+
+class Vehicle {
+protected:
+    string brand;
+    int speed;
+
+public:
+    Vehicle(string brand, int speed) {
+        this->brand = brand;
+        this->speed = speed;
+    }
+
+    void displayDetails() {
+        cout<<"Brand: "<<brand<<"\nSpeed: "<<speed<<" km/h"<<endl;
+    }
+};
+
+class Car : public Vehicle {
+protected:
+    int seats;
+
+public:
+    Car(string brand, int speed, int seats) : Vehicle(brand, speed) {
+        this->seats = seats;
+    }
+
+    void displayDetails() {
+        cout <<"Brand: "<<brand<<"\nSpeed: "<<speed<< " km/h \nSeats: "<<seats<<endl;
+    }
+};
+
+class ElectricCar : public Car {
+private:
+    int batteryLife;
+
+public:
+    ElectricCar(string brand, int speed, int seats, int batteryLife) : Car(brand, speed, seats) {
+        this->batteryLife = batteryLife;
+    }
+
+    void displayDetails() {
+        cout<<"Brand: "<<brand<<"\nSpeed: "<<speed<<" km/h, Seats: "<<seats<<"\nBattery Life: "<<batteryLife<<" hours"<<endl;
+    }
+};
+
+int main() {
+    string brand;
+    int speed, seats, batteryLife;
+
+    cout<<"enter electric car details: "<<endl;
+    cout<<"brand: ";
+    cin>>brand;
+    cout<<"speed (km/h): ";
+    cin>>speed;
+    cout<<"seating capacity: ";
+    cin>>seats;
+    cout<<"battery life(hrs): ";
+    cin >> batteryLife;
+
+    ElectricCar eCar(brand, speed, seats, batteryLife);
+
+    cout << "\nElectric Car details:\n";
+    eCar.displayDetails();
+
+    return 0;
+}
