@@ -1,0 +1,67 @@
+#include <iostream>
+
+using namespace std;
+
+class Employee {
+public:
+    string name;
+    string designation;
+
+    Employee(string name, string designation) {
+        this->name = name;
+        this->designation = designation;
+    }
+};
+
+class Project {
+private:
+    string title;
+    string deadline;
+    Employee** employees;
+    int employeeCount;
+
+public:
+    Project(string title, string deadline) {
+        this->title = title;
+        this->deadline = deadline;
+        employeeCount = 0;
+        employees = new Employee*[10];
+    }
+
+    void addEmployee(Employee* employee) {
+        employees[employeeCount++] = employee;
+    }
+
+    void displayDetails() {
+        cout << "\nProject Title: " <<title<< endl;
+        cout << "Deadline: " <<deadline<< endl;
+        cout << "Assigned Employees: " << endl;
+        for (int i=0 ; i<employeeCount ; i++) {
+            cout <<employees[i]->name<< " (" <<employees[i]->designation<< ")" << endl;
+        }
+    }
+
+    ~Project() {
+        delete[] employees;
+    }
+};
+
+int main() {
+    Employee emp1("Raahim", "Software Engineer");
+    Employee emp2("Ebad", "Project Manager");
+    Employee emp3("Taaha", "Developer");
+
+    Project project1("AI System", "02-02-2025");
+    Project project2("Web Development", "15-03-2025");
+
+    project1.addEmployee(&emp1);
+    project1.addEmployee(&emp2);
+
+    project2.addEmployee(&emp1);
+    project2.addEmployee(&emp3);
+
+    project1.displayDetails();
+    project2.displayDetails();
+
+    return 0;
+}
