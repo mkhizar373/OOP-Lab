@@ -1,0 +1,85 @@
+#include <iostream>
+using namespace std;
+
+class Person {
+protected:
+    string name;
+    int age;
+
+public:
+    Person(string name, int age) {
+        this->name = name;
+        this->age = age;
+    }
+
+    void displayDetails() {
+        cout<<"Name: "<<name<<"\nAge: "<<age<<endl;
+    }
+};
+
+class Teacher : virtual public Person {
+protected:
+    string subject;
+
+public:
+    Teacher(string name, int age, string subject) : Person(name, age) {
+        this->subject = subject;
+    }
+
+    void displayDetails() {
+        cout<<"Subject: "<<subject<<endl;
+    }
+};
+
+class Researcher : virtual public Person {
+protected:
+    string researchArea;
+
+public:
+    Researcher(string name, int age, string researchArea) : Person(name, age) {
+        this->researchArea = researchArea;
+    }
+
+    void displayDetails() {
+        cout<<"Research Area: "<<researchArea<<endl;
+    }
+};
+
+class Professor : public Teacher, public Researcher {
+private:
+    int publications;
+
+public:
+    Professor(string name, int age, string subject, string researchArea, int publications) : Person(name, age), Teacher(name, age, subject), Researcher(name, age, researchArea) {
+        this->publications = publications;
+    }
+
+    void displayDetails() {
+        cout<<"Name: "<<Person::name<<"\nAge: "<<Person::age<<"\nSubject: "<<subject<<"\nResearch Area: "<<researchArea<<"\nPublications: "<<publications<<endl;
+    }
+};
+
+int main() {
+    string name, subject, researchArea;
+    int age, publications;
+
+    cout<<"Enter Professor details:\n";
+    cout<<"Name: ";
+    cin>>name;
+    cout<<"Age: ";
+    cin>>age;
+    cout<<"Subject expertise: ";
+    cin>>subject;
+    cout<<"Research area: ";
+    cin>>researchArea;
+    cout<<"Number of publications: ";
+    cin>>publications;
+
+    Professor prof(name, age, subject, researchArea, publications);
+
+    cout<<"\nProfessor details:\n";
+    prof.displayDetails();
+
+    return 0;
+}
+
