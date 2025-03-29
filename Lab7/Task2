@@ -1,0 +1,143 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Product {
+protected:
+    int productID;
+    string productName;
+    double price;
+    int stockQuantity;
+
+public:
+    Product(int id, string name, double p, int stock=0) {
+        productID=id;
+        productName=name;
+        price=p;
+        stockQuantity=stock;
+    }
+    
+    void applyDiscount(double percentage) {
+        price=price-(price*(percentage/100.0));
+    }
+    
+    double calculateTotalPrice(int quantity) {
+        return price*quantity;
+    }
+    
+    virtual void displayProductInfo() {
+        cout<<"Product ID: "<<productID<<"\nName: "<<productName<<"\nPrice: PKR "<<price<<"\nStock: "<<stockQuantity<<"\n";
+    }
+    
+    friend double operator+(const Product &p1, const Product &p2) {
+        return p1.price+p2.price;
+    }
+
+    friend ostream& operator<<(ostream &out, const Product &p) {
+        out<<"Product ID: "<<p.productID<<" | Name: "<<p.productName<<" | Price: PKR "<<p.price;
+        return out;
+    }
+    
+    double getPrice() const {
+        return price;
+    }
+};
+
+class Electronics : public Product {
+private:
+    int warrantyPeriod;
+    string brand;
+
+public:
+    Electronics(int id, string name, double p, int warranty, string b, int stock=0) : Product(id, name, p, stock) {
+        warrantyPeriod=warranty;
+        brand=b;
+    }
+    
+    void displayProductInfo() override {
+        Product::displayProductInfo();
+        cout<<"Brand: "<<brand<<"\nWarranty: "<<warrantyPeriod<<" years\n";
+    }
+};
+
+class Clothing : public Product {
+private:
+    string size;
+    string color;
+    string fabricMaterial;
+
+public:
+    Clothing(int id, string name, double p, string s, string c, string fabric, int stock=0) : Product(id, name, p, stock) {
+        size=s;
+        color=c;
+        fabricMaterial=fabric;
+    }
+    
+    void applyDiscount(double percentage) {
+        if (percentage>30) {
+            percentage=30;
+        }
+        Product::applyDiscount(percentage);
+    }
+};
+
+class FoodItem : public Product {
+private:
+    string expirationDate;
+    int calories;
+
+public:
+    FoodItem(int id, string name, double p, string expiry, int cal, int stock = 0) : Product(id, name, p, stock) {
+        expirationDate=expiry;
+        calories=cal;
+    }
+    
+    double calculateTotalPrice(int quantity) {
+        if (quantity>5) {
+            return Product::calculateTotalPrice(quantity)*0.9;
+        }
+        return Product::calculateTotalPrice(quantity);
+    }
+};
+
+class Book : public Product {
+private:
+    string author;
+    string genre;
+
+public:
+    Book(int id, string name, double p, string a, string g, int stock = 0) : Product(id, name, p, stock) {
+        author=a;
+        genre=g;
+    }
+    
+    void displayProductInfo() override {
+        Product::displayProductInfo();
+        cout<<"Author: "<<author<<"\nGenre: "<<genre<<"\n";
+    }
+};
+
+int main() {
+    Electronics laptop(1,"Gaming Laptop",200000,2,"HP",6);
+    Clothing shirt(2,"Casual Shirt",2500,"M","Black","Cotton",15);
+    FoodItem apple(3,"Apple",250,"2025-04-03",95,100);
+    Book novel(4,"Harry Potter",500,"J.K Rowling","Fantasy",15);
+    
+    cout<<"Product Information :\n";
+    laptop.displayProductInfo();
+    shirt.displayProductInfo();
+    apple.displayProductInfo();
+    novel.displayProductInfo();
+
+    shirt.applyDiscount(30);
+    
+    cout<<"\nBulk Purchase Total Price :\n";
+    double totalPrice=(laptop+shirt)+apple.getPrice();
+    cout<<"Total Price of Laptop, Shirt, and Apple: $"<<totalPrice<<"\n";
+
+    cout<<"\nFormatted Product Output :\n";
+    cout<<laptop<<"\n";
+    cout<<novel<<"\n";
+    
+    return 0;
+}
