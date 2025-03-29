@@ -1,0 +1,99 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Person {
+protected:
+    string name;
+    int age;
+    string contactNumber;
+    string address;
+
+public:
+    Person(string n, int a, string c, string addr) : name(n), age(a), contactNumber(c), address(addr) {}
+
+    virtual void displayInfo() {
+        cout<<"Name: "<<name<<"\nAge: "<<age<<"\nContact: "<<contactNumber<<"\nAddress: "<<address<<"\n";
+    }
+
+    virtual void updateInfo(string newContact, string newAddress) {
+        contactNumber=newContact;
+        address=newAddress;
+        cout<<"Info updated.\n";
+    }
+};
+
+class Patient : public Person {
+private:
+    int patientID;
+    string medicalHistory;
+    string doctorAssigned;
+
+public:
+    Patient(string n, int a, string c, string addr, int id, string history, string doctor) : Person(n, a, c, addr), patientID(id), medicalHistory(history), doctorAssigned(doctor) {}
+
+    void displayInfo() override {
+        Person::displayInfo();
+        cout<<"Patient ID: "<<patientID<<"\nMedical History: "<<medicalHistory<<"\nDoctor Assigned: "<<doctorAssigned<<"\n";
+    }
+};
+
+class Doctor : public Person {
+private:
+    string specialization;
+    double consultationFee;
+    string patientsList;
+
+public:
+    Doctor(string n, int a, string c, string addr, string spec, double fee, string patients) : Person(n, a, c, addr), specialization(spec), consultationFee(fee), patientsList(patients) {}
+
+    void displayInfo() override {
+        Person::displayInfo();
+        cout<<"Specialization: "<<specialization<<"\nConsultation Fee: PKR "<<consultationFee<<"\nPatients List: "<<patientsList<<"\n";
+    }
+};
+
+class Nurse : public Person {
+private:
+    string assignedWard;
+    string shiftTimings;
+
+public:
+    Nurse(string n, int a, string c, string addr, string ward, string shift) : Person(n, a, c, addr), assignedWard(ward), shiftTimings(shift) {}
+
+    void displayInfo() override {
+        Person::displayInfo();
+        cout<<"Assigned Ward: "<<assignedWard<<"\nShift Timings: " <<shiftTimings<<"\n";
+    }
+};
+
+class Administrator : public Person {
+private:
+    string department;
+    double salary;
+
+public:
+    Administrator(string n, int a, string c, string addr, string dept, double sal) : Person(n, a, c, addr), department(dept), salary(sal) {}
+
+    void updateInfo(string newContact, string newAddress) override {
+        Person::updateInfo(newContact, newAddress);
+        cout<<"Administrator data updated.\n";
+    }
+};
+
+int main() {
+    Patient p("Ahmed",30,"03001234567","Karachi",101,"Diabetes","Dr. Ayesha");
+    Doctor d("Dr. Ayesha",40,"03109876543","Lahore","Cardiologist",5000,"Ahmed,Sara");
+    Nurse n("Hina",28,"03456789123","Islamabad","ICU","Night Shift");
+    Administrator a("Ali",35,"03219876543","Multan","HR",80000);
+
+    cout << "Hospital Personnel Info :\n";
+    p.displayInfo();
+    d.displayInfo();
+    n.displayInfo();
+    a.displayInfo();
+
+    a.updateInfo("03335557788", "Peshawar");
+
+    return 0;
+}
