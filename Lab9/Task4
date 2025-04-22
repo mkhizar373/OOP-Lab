@@ -1,0 +1,66 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class WeatherSensor {
+public:
+    virtual void readData() = 0;
+    virtual void displayReport() = 0;
+    virtual ~WeatherSensor() {}
+};
+
+class Thermometer : public WeatherSensor {
+private:
+    float temperature;
+
+public:
+    Thermometer() {
+        temperature=0.0;
+    }
+
+    void readData() override {
+        temperature = 27.5; 
+    }
+
+    void displayReport() override {
+        cout<<"Thermometer Report:"<<endl;
+        cout<<"Temperature: "<<temperature<<" °C"<<endl;
+    }
+};
+
+class Barometer : public WeatherSensor {
+private:
+    float pressure;
+
+public:
+    Barometer() {
+        pressure=0.0;
+    }
+
+    void readData() override {
+        pressure=965.00; 
+    }
+
+    void displayReport() override {
+        cout<<"Barometer Report:"<<endl;
+        cout<<"Pressure: "<<pressure<<" hPa"<<endl;
+    }
+};
+
+int main() {
+    WeatherSensor* sensor1 = new Thermometer();
+    WeatherSensor* sensor2 = new Barometer();
+
+    sensor1->readData();
+    sensor1->displayReport();
+
+    cout<<endl;
+
+    sensor2->readData();
+    sensor2->displayReport();
+
+    delete sensor1;
+    delete sensor2;
+
+    return 0;
+}
