@@ -1,4 +1,4 @@
-#include "Course.h"
+#include "course.h"
 
 Course::Course(string code, int crd) {
     courseCode=code;
