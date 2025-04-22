@@ -1,6 +1,6 @@
 #include <iostream>
-#include "LectureCourse.h"
-#include "LabCourse.h"
+#include "lecturecourse.h"
+#include "labcourse.h"
 using namespace std;
 
 int main() {
