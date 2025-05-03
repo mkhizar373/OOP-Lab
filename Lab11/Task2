@@ -1,0 +1,89 @@
+#include <iostream>
+#include <exception>
+using namespace std;
+
+class QueueOverflowException : public exception {
+public:
+    const char* what() const noexcept override {
+        return "std::exception"; 
+    }
+};
+
+class QueueUnderflowException : public exception {
+public:
+    const char* what() const noexcept override {
+        return "std::exception"; 
+    }
+};
+
+template <typename T>
+class Queue {
+private:
+    T* arr;
+    int front, rear, capacity;
+
+public:
+    Queue(int cap) : capacity(cap), front(0), rear(0) {
+        arr = new T[capacity];
+    }
+
+    ~Queue() {
+        delete[] arr;
+    }
+
+    void enqueue(const T& value) {
+        if (rear==capacity) {
+            throw QueueOverflowException();
+        }
+        arr[rear++] = value;
+    }
+
+    T dequeue() {
+        if (front==rear) {
+            throw QueueUnderflowException();
+        }
+        T value = arr[front++];
+        return value;
+    }
+
+    bool isEmpty() const {
+        return front==rear;
+    }
+
+    bool isFull() const {
+        return rear==capacity;
+    }
+};
+
+int main() {
+    try {
+        Queue<int> q(3);
+
+        q.enqueue(1);
+        q.enqueue(2);
+        q.enqueue(3);
+        cout<<"Enqueued 3 elements."<<endl;
+
+        try {
+            q.enqueue(4);  
+        } catch (const QueueOverflowException& e) {
+            cout<<"Attempting to enqueue to a full queue:"<<endl;
+            cout<<"Caught QueueOverflowException: "<<e.what()<<endl;
+        }
+
+        q.dequeue();
+        cout << "Dequeued 1 element." << endl;
+
+        try {
+            q.dequeue();  
+        } catch (const QueueUnderflowException& e) {
+            cout<<"Attempting to dequeue from an empty queue:"<<endl;
+            cout<<"Caught QueueUnderflowException: "<<e.what()<<endl;
+        }
+
+    } catch (const exception& e) {
+        cout<<"Exception caught: "<<e.what()<<endl;
+    }
+
+    return 0;
+}
