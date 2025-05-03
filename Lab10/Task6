@@ -8,7 +8,7 @@ struct InventoryItem {
 };
 
 int main() {
-    InventoryItem item1 = {101, "EnginePart"};
+    InventoryItem item1 = {001, "DrillMotor"};
     ofstream outFile("inventory.dat", ios::binary);
     outFile.write((char*)&item1, sizeof(item1));
     outFile.close();
