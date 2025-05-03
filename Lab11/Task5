@@ -1,0 +1,80 @@
+#include <iostream>
+#include <exception>
+using namespace std;
+
+class NegativeStockException : public exception {
+public:
+    const char* what() const noexcept override {
+        return "std::exception";
+    }
+};
+
+class OverCapacityException : public exception {
+public:
+    const char* what() const noexcept override {
+        return "std::exception";
+    }
+};
+
+template <typename T>
+class InventoryItem {
+private:
+    T stock;
+    const T maxStock;
+
+public:
+    InventoryItem(T initialStock, T max) : stock(initialStock), maxStock(max) {
+        if (stock<0) {
+            throw NegativeStockException();
+        }
+        if (stock>maxStock) {
+            throw OverCapacityException();
+        }
+    }
+
+    void setStock(T newStock) {
+        if (newStock<0) {
+            throw NegativeStockException();
+        }
+        if (newStock>maxStock) {
+            throw OverCapacityException();
+        }
+        stock=newStock;
+    }
+
+    T getStock() const {
+        return stock;
+    }
+};
+
+int main() {
+    try {
+        InventoryItem<int> item1(-5, 100);
+    } catch (const NegativeStockException& e) {
+        cout<<"Caught NegativeStockException what(): "<<e.what()<<endl;
+    } catch (const exception& e) {
+        cout<<"Caught exception what(): "<<e.what()<<endl;
+    }
+
+    try {
+        InventoryItem<int> item2(120, 100);
+    } catch (const OverCapacityException& e) {
+        cout<<"Caught OverCapacityException what(): "<<e.what()<<endl;
+    } catch (const exception& e) {
+        cout<<"Caught exception what(): "<<e.what()<<endl;
+    }
+
+    try {
+        InventoryItem<int> item3(50, 100);
+        cout<<"Stock is "<<item3.getStock()<<endl;
+        item3.setStock(200);
+    } catch (const OverCapacityException& e) {
+        cout<<"Caught OverCapacityException what(): "<<e.what()<<endl;
+    } catch (const NegativeStockException& e) {
+        cout<<"Caught NegativeStockException what(): "<<e.what()<<endl;
+    } catch (const exception& e) {
+        cout<<"Caught exception what(): "<<e.what()<<endl;
+    }
+
+    return 0;
+}
