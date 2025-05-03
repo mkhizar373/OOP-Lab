@@ -1,0 +1,18 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main() {
+    ifstream in("large_log.txt");
+    char buffer[11]={};
+    in.read(buffer, 10);
+    cout<<buffer<<endl;
+    cout<<in.tellg()<<endl;
+
+    in.read(buffer, 10);
+    cout<<buffer<<endl;
+    cout<<in.tellg()<<endl;
+
+    in.close();
+    return 0;
+}
