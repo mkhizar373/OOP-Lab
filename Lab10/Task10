@@ -1,0 +1,14 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+int main() {
+    ifstream in("data_records.txt");
+    in.seekg(18);
+    string record;
+    getline(in, record);
+    cout<<record<<endl;
+    in.close();
+    return 0;
+}
