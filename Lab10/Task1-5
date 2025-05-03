@@ -1,0 +1,70 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+using namespace std;
+
+int main() {
+// Task 1:
+    ifstream inputFile("vehicles.txt");
+    if (!inputFile.is_open()) {
+        cout<<"Cant open file"<<endl;
+        return 1;
+    }
+
+    string line;
+    while (getline(inputFile, line)) {
+        if (line.empty()) continue;
+
+// Task 2:
+        istringstream ss(line);
+        string type, id, name, yearStr, extraData, cert;
+        getline(ss, type, ',');
+        getline(ss, id, ',');
+        getline(ss, name, ',');
+        getline(ss, yearStr, ',');
+        getline(ss, extraData, ',');
+        getline(ss, cert, ',');
+
+        cout<<type<<endl;
+        cout<<id<<endl;
+        cout<<name<<endl;
+        cout<<yearStr<<endl;
+        cout<<extraData<<endl;
+        cout<<cert<<endl;
+
+// Task 3:
+        int year=stoi(yearStr);
+        cout<<year<<endl;
+
+// Task 4:
+        if (type=="AutonomousCar") {
+            size_t pos=extraData.find(':');
+            if (pos!=string::npos) {
+                float swVersion=stof(extraData.substr(pos+1));
+                cout<<swVersion<< " "<<id<<endl;
+            }
+        } else if (type=="ElectricVehicle") {
+            size_t pos=extraData.find(':');
+            if (pos!=string::npos) {
+                int battery=stoi(extraData.substr(pos+1));
+                cout<<battery<<" "<<id<<endl;
+            }
+// Task 5:
+        } else if (type=="HybridTruck") {
+            size_t cargoPos=extraData.find("Cargo:");
+            size_t pipePos=extraData.find('|');
+            size_t batteryPos=extraData.find("Battery:");
+            if (cargoPos != string::npos && pipePos != string::npos && batteryPos != string::npos) {
+                int cargo=stoi(extraData.substr(cargoPos+6, pipePos-(cargoPos+6)));
+                int battery = stoi(extraData.substr(batteryPos+8));
+                cout<<cargo<<" "<<battery<<endl;
+            }
+        } else {
+            cout<<"Unknown Type"<<endl;
+        }
+    }
+
+    inputFile.close();
+    return 0;
+}
