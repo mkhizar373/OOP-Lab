@@ -1,0 +1,13 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main() {
+    ofstream out("sensor_log.txt");
+    out<<"Sensor 1: 25.5 C\n";
+    cout<<out.tellp()<<endl;
+    out<<"Sensor 2: 98.1 %RH\n";
+    cout<<out.tellp()<<endl;
+    out.close();
+    return 0;
+}
